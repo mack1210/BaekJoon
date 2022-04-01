@@ -35,6 +35,7 @@ print(time()-start_time)
 
 
 # numpy를 쓰면 백준에서는 런타임에러가 발생한다.
+# 넘파이 없이 시도할 것
 # import numpy as np
 from time import time
 
