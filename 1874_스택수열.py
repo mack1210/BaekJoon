@@ -4,13 +4,11 @@ class Stack:
     
     def push(self, x):
         self.lst.append(x)
-        print('+')
     
     def pop(self):
-        print('-')
         return self.lst.pop()
     
-    def last(self):
+    def last(self) -> int:
         if len(self.lst):
             return self.lst[-1]
         else:
@@ -22,13 +20,12 @@ class Stack:
     def show(self):
         print(self.lst)
 
-N = 8
-arr = []
+N = int(input())
 S = Stack()
 
-last_pop = 0
 cnt = 0
 max = 0
+result = []
 for i in range(N):
     num = int(input())
     
@@ -38,26 +35,37 @@ for i in range(N):
         
         # 최댓값이 갱신되면 cnt를 0으로 설정
         cnt = 0
-    print(max, max_new)
+    # print(max, max_new)
     # cnt가 0이 아니면
-    if cnt:
-        if S.all_list().index(num):
-            front = S.all_list().index(num)
-            end = S.last()
+    try:
+        if cnt:
+            if S.all_list().index(num)+1:
+                front = S.all_list().index(num)
+                end = S.all_list().index(S.last())
+                
+                for k in range(front, end+1):
+                    # print('index {0}, last {1} k {2}'.format(front,end+1, k))
+                    S.pop()
+                    result.append('-')
+        # cnt가 0이면
+        else:
+            # 이전 최댓값에서 부터 새로 받은 값까지 push 
+            for j in range(max+1, max_new+1):
+                # print('j {0} max{1} max_new{2}'.format(j, max, max_new))
+                max = max_new
+                S.push(j)
+                result.append('+')
             
-            for k in range(front, end):
-                print('index {0}, last {1}'.format(front,end))
+            # 스택의 마지막 값이 j와 같아지면 pop
+            if S.last() == j:
                 S.pop()
-    # cnt가 0이면
-    else:
-        # 이전 최댓값에서 부터 새로 받은 값까지 push 
-        for j in range(max+1, max_new+1):
-            max = max_new
-            S.push(j)
-        
-        # 스택의 마지막 값이 j와 같아지면 pop
-        if S.last() == j:
-            S.pop()
-        cnt += 1
+                result.append('-')
+            cnt += 1
+    except:
+        print('NO')
+        result = []
+        break
+
     
-    S.show()
+for i in range(result.__len__()):
+    print(result[i])
