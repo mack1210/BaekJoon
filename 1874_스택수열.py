@@ -1,71 +1,32 @@
-class Stack:
-    def __init__(self):
-        self.lst = [] 
-    
-    def push(self, x):
-        self.lst.append(x)
-    
-    def pop(self):
-        return self.lst.pop()
-    
-    def last(self) -> int:
-        if len(self.lst):
-            return self.lst[-1]
-        else:
-            return 0
-        
-    def all_list(self):
-        return self.lst
-        
-    def show(self):
-        print(self.lst)
+'''https://my-coding-notes.tistory.com/81
+스택의 push, pop을 이용하여 입력된 수열을 만드는 문제이다.
+스택을 만들어 1부터 n까지 push 연산을 하면서
+중간에 수열에 해당하는 숫자가 나오면 pop을 해주고 수열의 비교 인덱스를 하나 증가시키면 된다.
+스택 연산으로 수열을 만들 수 없는 경우 NO를 출력해야 하는데, 
+적절할 때 pop 연산을 수행할 수 없다는 의미이므로
+스택에 n 보다 높은 숫자를 push 해야 하는 경우 NO를 출력하면 된다.
+이하 정답
+'''
+import sys
+input = sys.stdin.readline
+n = int(input())
+seq = [int(input()) for i in range(n)]
 
-N = int(input())
-S = Stack()
-
-cnt = 0
-max = 0
-result = []
-for i in range(N):
-    num = int(input())
-    
-    # 매번 최댓값을 갱신해 준다
-    if num > max:
-        max_new = num
-        
-        # 최댓값이 갱신되면 cnt를 0으로 설정
-        cnt = 0
-    # print(max, max_new)
-    # cnt가 0이 아니면
-    try:
-        if cnt:
-            if S.all_list().index(num)+1:
-                front = S.all_list().index(num)
-                end = S.all_list().index(S.last())
-                
-                for k in range(front, end+1):
-                    # print('index {0}, last {1} k {2}'.format(front,end+1, k))
-                    S.pop()
-                    result.append('-')
-        # cnt가 0이면
-        else:
-            # 이전 최댓값에서 부터 새로 받은 값까지 push 
-            for j in range(max+1, max_new+1):
-                # print('j {0} max{1} max_new{2}'.format(j, max, max_new))
-                max = max_new
-                S.push(j)
-                result.append('+')
-            
-            # 스택의 마지막 값이 j와 같아지면 pop
-            if S.last() == j:
-                S.pop()
-                result.append('-')
-            cnt += 1
-    except:
-        print('NO')
-        result = []
-        break
-
-    
-for i in range(result.__len__()):
-    print(result[i])
+stack = []
+index = 0
+num = 1
+cal = []
+while(index!=n):
+    if stack and stack[-1] == seq[index]:
+        stack.pop()
+        index += 1
+        cal.append("-")
+    else:
+        if num > n:
+            print("NO")
+            break
+        stack.append(num)
+        num += 1
+        cal.append("+")
+else:
+    print(*cal)
